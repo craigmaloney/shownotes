@@ -1,10 +1,18 @@
-{
-    "1":{
+[
+    {
         "title":"Foo song",
         "artist":"Foo Band",
         "album":"Foo Album",
         "license":"BY-NC-SA",
         "url":"http://decafbad.net",
         "audacity":"audacityname"
+    },
+    {
+        "title":"Bar song",
+        "artist":"Bar Band",
+        "album":"Bar Album",
+        "license":"BY-NC-SA",
+        "url":"http://decafbad.net",
+        "audacity":"audacityname"
     }
-}
+]
