@@ -52,6 +52,7 @@ class ShowNotes(object):
             elif num_tracks == len(self.playlist):
                 position = 'last'
             print self.announcements[position].format(**i)
+        self.playlist.reverse()
 
 def configure():
     parser = argparse.ArgumentParser(description='Shownotes Application')

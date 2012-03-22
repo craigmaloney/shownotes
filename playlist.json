@@ -1,18 +1,83 @@
 [
     {
-        "title":"Foo song",
-        "artist":"Foo Band",
-        "album":"Foo Album",
+        "title":"Katatonia",
+        "artist":"108 Not",
+        "album":"108 Not",
         "license":"BY-NC-SA",
-        "url":"http://decafbad.net",
-        "audacity":"audacityname"
+        "url":"http://www.jamendo.com/album/105569/",
+        "audacity":"02-108Not-108 Not - Katatonia",
+        "time":"00:11"
     },
     {
-        "title":"Bar song",
-        "artist":"Bar Band",
-        "album":"Bar Album",
+        "title":"Taste the Blood",
+        "artist":"Skitzo",
+        "album":"Synusar'sukus",
         "license":"BY-NC-SA",
-        "url":"http://decafbad.net",
-        "audacity":"audacityname"
+        "url":"http://download.magnatune.com/artists/albums/skitzo-synusarsukus/",
+        "audacity":"05-Taste the Blood-Skitzo",
+        "time":"03:42"
+    },
+    {
+        "title":"Pyrophile",
+        "artist":"Spike The Tomb",
+        "album":"Gods Be Forgotten",
+        "license":"BY-NC-ND",
+        "url":"http://spikethetomb.bandcamp.com/",
+        "audacity":"Spike the tomb - Pyrophile",
+        "time":"07:38"
+    },
+    {
+        "title":"Repent",
+        "artist":"Severed Fifth",
+        "album":"Liberate",
+        "license":"BY-NC-SA",
+        "url":"http://severedfifth.com",
+        "audacity":"09 Repent",
+        "time":"11:33"
+    },
+    {
+        "title":"Darker Days",
+        "artist":"All Hallow's Evil",
+        "album":"What Prayers Cannot Heal",
+        "license":"BY-NC-SA",
+        "url":"http://allhallowsevil.bandcamp.com/album/what-prayers-cannot-heal",
+        "audacity":"All Hallow's Evil - What Prayers Cannot Heal - 01 Darker Days",
+        "time":"15:39"
+    },
+    {
+        "title":"Last Battle of a Hero",
+        "artist":"Eternal Dream",
+        "album":"The Fall Of Salanthine",
+        "license":"BY-NC-SA",
+        "url":"http://www.jamendo.com/en/album/105618",
+        "audacity":"03-Eternal Dream-Last Battle Of A Hero",
+        "time":"20:32"
+    },
+    {
+        "title":"Phantasmagoric",
+        "artist":"Wraithshadows",
+        "album":"Concerto Dei Morti",
+        "license":"BY-NC-SA",
+        "url":"http://wraithshadows.bandcamp.com/",
+        "audacity":"Wraithshadows - Concerto Dei Morti - 03 Phantasmagoric",
+        "time":"25:13"
+    },
+    {
+        "title":"Two Benefits",
+        "artist":"Demon Steed",
+        "album":"Demon Steed",
+        "license":"BY-NC-SA",
+        "url":"http://demonsteed.bandcamp.com/album/demon-steed",
+        "audacity":"Demon Steed - Demon Steed - 02 Two Benefits",
+        "time":"29:36"
+    },
+    {
+        "title":"How To Get Signed To Sumerian Records (Redux)",
+        "artist":"Spiral Mountain",
+        "album":"(Single)",
+        "license":"BY-NC-ND",
+        "url":"http://spiralmountain.bandcamp.com/track/how-to-get-signed-to-sumerian-records-redux",
+        "audacity":"Spiralmountain - How To Get Signed to Sumerian Records %28Redux%29",
+        "time":"33:18"
     }
 ]
