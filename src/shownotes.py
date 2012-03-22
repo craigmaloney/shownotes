@@ -83,9 +83,9 @@ def configure():
 
 def main():
     args = configure()
-    print args
     show = ShowNotes(args.json, args.audacity)
     print '\n'.join([note for note in show.create_shownotes()])
+    print
     print '\n'.join([ann for ann in show.create_announcement()])
 
 if __name__ == '__main__':
