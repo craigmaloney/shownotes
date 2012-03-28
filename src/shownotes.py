@@ -6,7 +6,7 @@ from BeautifulSoup import BeautifulStoneSoup
 
 
 class ShowNotes(object):
-    song_template = """<li>({time}) <a href="{url}">{title} by {artist} from {album}</a> ({license})</li>"""
+    song_template = unicode("""<li>({time}) <a href="{url}">{title} by {artist} from {album}</a> ({license})</li>""")
     announcements = {
         "first":"That was {title} by {artist} from {album}.",
         "second":"Before that, {title} by {artist} from {album}.",
