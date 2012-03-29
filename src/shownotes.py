@@ -8,10 +8,10 @@ from BeautifulSoup import BeautifulStoneSoup
 class ShowNotes(object):
     song_template = unicode("""<li>({time}) <a href="{url}">{title} by {artist} from {album}</a> ({license})</li>""")
     announcements = {
-        "first":"That was {title} by {artist} from {album}.",
-        "second":"Before that, {title} by {artist} from {album}.",
-        "middle":"{title} by {artist} from {album}.",
-        "last":"And starting off the show. {title} by {artist} from the album {album}."
+        "first":u"That was {title} by {artist} from the album {album}.",
+        "second":u"Before that, {title} by {artist} from {album}.",
+        "middle":u"{title} by {artist} from {album}.",
+        "last":u"And starting off the show. {title} by {artist} from the album {album}."
     }
 
     def __init__(self, filename, audacity_file):
@@ -54,7 +54,7 @@ class ShowNotes(object):
         """
         num_tracks = 0
         self.playlist.reverse()
-        for i in self.playlist:
+        for track in self.playlist:
             num_tracks = num_tracks + 1
             position = 'middle'
             if num_tracks == 1:
@@ -63,7 +63,7 @@ class ShowNotes(object):
                 position = 'second'
             elif num_tracks == len(self.playlist):
                 position = 'last'
-            yield self.announcements[position].format(**i)
+            yield self.announcements[position].format(**track)
         self.playlist.reverse()
 
 
