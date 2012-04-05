@@ -14,18 +14,29 @@ class ShowNotes(object):
         "last":u"And starting off the show. {title} by {artist} from the album {album}."
     }
 
+
     def __init__(self, filename, audacity_file):
-        """Docstrings!!!!!
+        """ Initialize the shownotes piece
+        :param filename: playlist JSON file
+        :type filename: string
+        :param audacity_file: File to get audacity timings
+        :type audacity_file: string
 
-        wtf is aud_timing?
-
+        note:: aud_timing will contain the audacity track name and time code
         """
         with open(filename, 'rt') as f:
             self.playlist = json.load(f)
         self.aud_timing = {}
         self.find_timing(audacity_file)
 
+
     def find_timing(self, audacity_file):
+        """ Finds the Audacity timings in the Audacity file.
+
+        :param audacity_file: Audacity file to find timings
+        :type audacity_file: string
+        """
+
         with open(audacity_file, 'rt') as aup_file:
             bs = BeautifulStoneSoup(aup_file)
             tracks = bs.findAll('wavetrack')
@@ -35,7 +46,12 @@ class ShowNotes(object):
                 timestamp = str(datetime.timedelta(seconds=secs))
                 self.aud_timing[track['name']] = timestamp
 
+
     def create_shownotes(self):
+        """ Create the show notes from a template
+        :rtype: string
+        """
+
         for i in self.playlist:
             tmp_timing = self.aud_timing[i['audacity']]
             hour, minute, second = tmp_timing.split(':')
@@ -47,11 +63,10 @@ class ShowNotes(object):
             yield self.song_template.format(**i)
 
     def create_announcement(self):
-        """I wouldn't print from here. What if you want to log, or email
-
-        Generate the data, but then let someone else handle the view
-
+        """ Generate a TTS friendly announcement
+        Reverses the playlist to read from bottom-up.
         """
+
         num_tracks = 0
         self.playlist.reverse()
         for track in self.playlist:
@@ -68,6 +83,7 @@ class ShowNotes(object):
 
 
 def configure():
+    """ Command-line arguments """
     parser = argparse.ArgumentParser(description='Shownotes Application')
     parser.add_argument('--audacity', '-a',
             action='store',
