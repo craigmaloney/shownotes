@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import unittest
+import responses
 from shownotes import ShowNotes
 
 def join_path(path, filename):
@@ -23,6 +24,7 @@ class ShowNotesTest(unittest.TestCase):
         self.assertIn('Katatonia by 108 Not from 108 Not', notes)
         self.assertIn('Repent by Severed Fifth from Liberate', notes)
         self.assertIn('How To Get Signed To Sumerian Records (Redux) by Spiral Mountain from (Single)', notes)
+        yield self.assertEqual(response_shownotes, notes)
 
     def test_load_non_ascii_shownotes(self):
         path = 'tests/test_files'
@@ -41,6 +43,7 @@ class ShowNotesTest(unittest.TestCase):
         self.assertIn('Katatonia by 108 Not from the album 108 Not', announce)
         self.assertIn('Repent by Severed Fifth from Liberate', announce)
         self.assertIn('How To Get Signed To Sumerian Records (Redux) by Spiral Mountain from the album (Single)', announce)
+        yield self.assertEqual(response_announce, notes)
 
     def test_load_non_ascii_announce(self):
         path = 'tests/test_files'

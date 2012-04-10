@@ -72,7 +72,7 @@ FILE "open_metalcast_XXX.{extension}"
         for i in self.playlist:
             tmp_timing = self.aud_timing[i['audacity']]
             hour, minute, second = tmp_timing.split(':')
-            i['time'] = self.format_timing(hour, minute, second)
+            i['time'] = unicode(self.format_timing(hour, minute, second))
 
             yield self.song_template.format(**i)
 
