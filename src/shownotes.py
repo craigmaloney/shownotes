@@ -13,6 +13,17 @@ class ShowNotes(object):
         "middle":u"{title} by {artist} from {album}.",
         "last":u"And starting off the show. {title} by {artist} from the album {album}."
     }
+    cuesheet_template = """  TRACK {tracknumber} AUDIO
+    TITLE "{title}"
+    PERFORMER "{artist}"
+    INDEX 01 {time}"""
+    cuesheet_header = """
+REM GENRE "Metal"
+REM DATE "2012"
+PERFORMER "Open Metalcast"
+TITLE "Open Metalcast Episode XXX"
+FILE "open_metalcast_XXX.mp3"
+"""
 
 
     def __init__(self, filename, audacity_file):
@@ -29,6 +40,15 @@ class ShowNotes(object):
         self.aud_timing = {}
         self.find_timing(audacity_file)
 
+
+    def format_timing(self, hour, minute, second):
+
+        time = ''
+        if int(hour) > 0:
+            time = '{}:{}:{}'.format(hour, minute, second)
+        else:
+            time = '{}:{}'.format(minute, second)
+        return time
 
     def find_timing(self, audacity_file):
         """ Finds the Audacity timings in the Audacity file.
@@ -55,12 +75,27 @@ class ShowNotes(object):
         for i in self.playlist:
             tmp_timing = self.aud_timing[i['audacity']]
             hour, minute, second = tmp_timing.split(':')
-            if int(hour) > 0:
-                i['time'] = '{}:{}:{}'.format(hour, minute, second)
-            else:
-                i['time'] = '{}:{}'.format(minute, second)
+            i['time'] = self.format_timing(hour, minute, second)
 
             yield self.song_template.format(**i)
+
+
+    def create_cuesheet(self):
+        """ Creates a cuesheet based on the playlist and audacity timings """
+
+        num_tracks = 0
+        for i in self.playlist:
+
+            num_tracks = num_tracks + 1
+            i['tracknumber'] = num_tracks
+
+            tmp_timing = self.aud_timing[i['audacity']]
+            hour, minute, second = tmp_timing.split(':')
+            i['time'] = "{}:{}".format(
+                    self.format_timing(hour, minute, second),
+                    '00')
+
+            yield self.cuesheet_template.format(**i)
 
     def create_announcement(self):
         """ Generate a TTS friendly announcement
@@ -81,7 +116,6 @@ class ShowNotes(object):
             yield self.announcements[position].format(**track)
         self.playlist.reverse()
 
-
 def configure():
     """ Command-line arguments """
     parser = argparse.ArgumentParser(description='Shownotes Application')
@@ -93,6 +127,10 @@ def configure():
             action='store',
             required=True,
             help='json playlist file')
+    parser.add_argument('--cue', '-c',
+            metavar='cuesheet-out',
+            type=argparse.FileType('wt'),
+            help='cuesheet output file')
     args = parser.parse_args()
     return args
 
@@ -103,6 +141,11 @@ def main():
     print '\n'.join([note for note in show.create_shownotes()])
     print
     print '\n'.join([ann for ann in show.create_announcement()])
+
+    print args
+    if 'cue' in args:
+        args.cue.write( show.cuesheet_header)
+        args.cue.write('\n'.join([track for track in show.create_cuesheet()]))
 
 if __name__ == '__main__':
     main()
