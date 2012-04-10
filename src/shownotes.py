@@ -8,10 +8,10 @@ from BeautifulSoup import BeautifulStoneSoup
 class ShowNotes(object):
     song_template = unicode("""<li>({time}) <a href="{url}">{title} by {artist} from {album}</a> ({license})</li>""")
     announcements = {
-        "first":u"That was {title} by {artist} from the album {album}.",
-        "second":u"Before that, {title} by {artist} from {album}.",
-        "middle":u"{title} by {artist} from {album}.",
-        "last":u"And starting off the show. {title} by {artist} from the album {album}."
+        "first": u"That was {title} by {artist} from the album {album}.",
+        "second": u"Before that, {title} by {artist} from {album}.",
+        "middle": u"{title} by {artist} from {album}.",
+        "last": u"And starting off the show. {title} by {artist} from the album {album}."
     }
     cuesheet_template = """  TRACK {tracknumber} AUDIO
     TITLE "{title}"
@@ -22,9 +22,8 @@ REM GENRE "Metal"
 REM DATE "2012"
 PERFORMER "Open Metalcast"
 TITLE "Open Metalcast Episode XXX"
-FILE "open_metalcast_XXX.mp3"
+FILE "open_metalcast_XXX.{extension}"
 """
-
 
     def __init__(self, filename, audacity_file):
         """ Initialize the shownotes piece
@@ -39,7 +38,6 @@ FILE "open_metalcast_XXX.mp3"
             self.playlist = json.load(f)
         self.aud_timing = {}
         self.find_timing(audacity_file)
-
 
     def format_timing(self, hour, minute, second):
 
@@ -66,7 +64,6 @@ FILE "open_metalcast_XXX.mp3"
                 timestamp = str(datetime.timedelta(seconds=secs))
                 self.aud_timing[track['name']] = timestamp
 
-
     def create_shownotes(self):
         """ Create the show notes from a template
         :rtype: string
@@ -78,7 +75,6 @@ FILE "open_metalcast_XXX.mp3"
             i['time'] = self.format_timing(hour, minute, second)
 
             yield self.song_template.format(**i)
-
 
     def create_cuesheet(self):
         """ Creates a cuesheet based on the playlist and audacity timings """
@@ -116,6 +112,7 @@ FILE "open_metalcast_XXX.mp3"
             yield self.announcements[position].format(**track)
         self.playlist.reverse()
 
+
 def configure():
     """ Command-line arguments """
     parser = argparse.ArgumentParser(description='Shownotes Application')
@@ -128,9 +125,8 @@ def configure():
             required=True,
             help='json playlist file')
     parser.add_argument('--cue', '-c',
-            metavar='cuesheet-out',
-            type=argparse.FileType('wt'),
-            help='cuesheet output file')
+            action='store_true',
+            help='Generate a cuesheet')
     args = parser.parse_args()
     return args
 
@@ -142,10 +138,13 @@ def main():
     print
     print '\n'.join([ann for ann in show.create_announcement()])
 
-    print args
     if 'cue' in args:
-        args.cue.write( show.cuesheet_header)
-        args.cue.write('\n'.join([track for track in show.create_cuesheet()]))
+        for extension in ['mp3', 'ogg']:
+            filename = 'cuesheet_{extension}.cue'.format(extension=extension)
+            with open(filename, 'wt') as f:
+                f.write(show.cuesheet_header.format(\
+                        extension=extension))
+                f.write('\n'.join([track for track in show.create_cuesheet()]))
 
 if __name__ == '__main__':
     main()
