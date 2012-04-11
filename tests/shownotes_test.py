@@ -3,6 +3,7 @@
 
 import unittest
 import responses
+import responses_nonascii
 from shownotes import ShowNotes
 
 def join_path(path, filename):
@@ -33,6 +34,7 @@ class ShowNotesTest(unittest.TestCase):
         shownotes = ShowNotes(json_file, aud_file)
         notes = '\n'.join([note for note in shownotes.create_shownotes()])
         self.assertIn(u"The Ground of All Being by Zarathustra from Yūgen", notes)
+        yield self.assertEqual(response_shownotes_nonascii, notes)
 
     def test_load_ascii_announce(self):
         path = 'tests/test_files'
@@ -52,3 +54,4 @@ class ShowNotesTest(unittest.TestCase):
         shownotes = ShowNotes(json_file, aud_file)
         announce = '\n'.join([ann for ann in shownotes.create_announcement()])
         self.assertIn(u"The Ground of All Being by Zarathustra from Yūgen", announce)
+        yield self.assertEqual(response_announce_nonascii, notes)

@@ -125,9 +125,9 @@ def configure():
             action='store',
             required=True,
             help='json playlist file')
-    parser.add_argument('--cue', '-c',
-            action='store_true',
-            help='Generate a cuesheet')
+#    parser.add_argument('--cue', '-c',
+#            action='store_true',
+#            help='Generate a cuesheet')
     args = parser.parse_args()
     return args
 
@@ -139,13 +139,12 @@ def main():
     print
     print u'\n'.join([ann for ann in show.create_announcement()])
 
-    if 'cue' in args:
-        for extension in ['mp3', 'ogg']:
-            filename = 'cuesheet_{extension}.cue'.format(extension=extension)
-            with codecs.open(filename, 'wt', 'utf-8') as f:
-                f.write(show.cuesheet_header.format(\
-                        extension=extension))
-                f.write('\n'.join([track for track in show.create_cuesheet()]))
+    for extension in ['mp3', 'ogg']:
+        filename = 'cuesheet_{extension}.cue'.format(extension=extension)
+        with codecs.open(filename, 'wt', 'utf-8') as f:
+            f.write(show.cuesheet_header.format(\
+                    extension=extension))
+            f.write('\n'.join([track for track in show.create_cuesheet()]))
 
 if __name__ == '__main__':
     main()
