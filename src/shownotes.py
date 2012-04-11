@@ -151,5 +151,6 @@ def main():
                 f.write('\n'.join([track for track in show.create_cuesheet()]))
 
 if __name__ == '__main__':
+    # Wrap sys.stdout into a StreamWriter to allow writing unicode.
     sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
     main()
