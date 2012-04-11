@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import argparse
+import codecs
 import datetime
 import json
 from BeautifulSoup import BeautifulStoneSoup
@@ -13,11 +14,11 @@ class ShowNotes(object):
         "middle": u"{title} by {artist} from {album}.",
         "last": u"And starting off the show. {title} by {artist} from the album {album}."
     }
-    cuesheet_template = """  TRACK {tracknumber} AUDIO
+    cuesheet_template = u"""  TRACK {tracknumber} AUDIO
     TITLE "{title}"
     PERFORMER "{artist}"
     INDEX 01 {time}"""
-    cuesheet_header = """
+    cuesheet_header = u"""
 REM GENRE "Metal"
 REM DATE "2012"
 PERFORMER "Open Metalcast"
@@ -34,7 +35,7 @@ FILE "open_metalcast_XXX.{extension}"
 
         note:: aud_timing will contain the audacity track name and time code
         """
-        with open(filename, 'rt') as f:
+        with codecs.open(filename, 'rt', 'utf-8') as f:
             self.playlist = json.load(f)
         self.aud_timing = {}
         self.find_timing(audacity_file)
@@ -55,7 +56,7 @@ FILE "open_metalcast_XXX.{extension}"
         :type audacity_file: string
         """
 
-        with open(audacity_file, 'rt') as aup_file:
+        with codecs.open(audacity_file, 'rt', 'utf-8') as aup_file:
             bs = BeautifulStoneSoup(aup_file)
             tracks = bs.findAll('wavetrack')
             for track in tracks:
@@ -134,14 +135,14 @@ def configure():
 def main():
     args = configure()
     show = ShowNotes(args.json, args.audacity)
-    print '\n'.join([note for note in show.create_shownotes()])
+    print u'\n'.join([note for note in show.create_shownotes()])
     print
-    print '\n'.join([ann for ann in show.create_announcement()])
+    print u'\n'.join([ann for ann in show.create_announcement()])
 
     if 'cue' in args:
         for extension in ['mp3', 'ogg']:
             filename = 'cuesheet_{extension}.cue'.format(extension=extension)
-            with open(filename, 'wt') as f:
+            with codecs.open(filename, 'wt', 'utf-8') as f:
                 f.write(show.cuesheet_header.format(\
                         extension=extension))
                 f.write('\n'.join([track for track in show.create_cuesheet()]))
