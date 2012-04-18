@@ -68,6 +68,14 @@ FILE "open_metalcast_XXX.{extension}"
                 timestamp = str(datetime.timedelta(seconds=secs))
                 self.aud_timing[track['name']] = timestamp
 
+    def sort_playlist(self):
+        """ Sort the playlist so it is displayed in time-based
+        order from the audacity file
+        """
+        for i in self.playlist:
+            i['audacity_time'] = self.aud_timing[i['audacity']]
+        self.playlist = sorted(self.playlist, key=lambda k: k['audacity_time'])
+
     def create_shownotes(self):
         """ Create the show notes from a template
         :rtype: string
@@ -138,6 +146,7 @@ def configure():
 def main():
     args = configure()
     show = ShowNotes(args.json, args.audacity)
+    show.sort_playlist()
     print u'\n'.join([note for note in show.create_shownotes()])
     print
     print u'\n'.join([ann for ann in show.create_announcement()])
