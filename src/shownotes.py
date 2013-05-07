@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import sys
 import codecs
-import locale
 
 import argparse
 import datetime
@@ -44,7 +43,6 @@ FILE "open_metalcast_XXX.{extension}"
         self.find_timing(audacity_file)
 
     def format_timing(self, hour, minute, second):
-
         time = ''
         if int(hour) > 0:
             time = '{}:{}:{}'.format(hour, minute, second)
@@ -129,13 +127,13 @@ def configure():
     """ Command-line arguments """
     parser = argparse.ArgumentParser(description='Shownotes Application')
     parser.add_argument('--audacity', '-a',
-            action='store',
-            required=True,
-            help='audacity file')
+                        action='store',
+                        required=True,
+                        help='audacity file')
     parser.add_argument('--json', '-j',
-            action='store',
-            required=True,
-            help='json playlist file')
+                        action='store',
+                        required=True,
+                        help='json playlist file')
     parser.add_argument('--cue', '-c',
             action='store_true',
             help='Generate a cuesheet')
@@ -147,7 +145,8 @@ def main():
     args = configure()
     show = ShowNotes(args.json, args.audacity)
     show.sort_playlist()
-    print u'\n'.join([note for note in show.create_shownotes()])
+    output = '\n'.join([note for note in show.create_shownotes()])
+    sys.stdout.write(output)
     print
     print u'\n'.join([ann for ann in show.create_announcement()])
 
@@ -161,5 +160,6 @@ def main():
 
 if __name__ == '__main__':
     # Wrap sys.stdout into a StreamWriter to allow writing unicode.
-    sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
+    #sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout) 
+    sys.stdout = codecs.getwriter('utf-8')(sys.stdout) 
     main()
